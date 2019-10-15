@@ -4,12 +4,14 @@ const server = express();
 
 //Usando route params
 
-server.get('/users/:id', (request,response) => {
-  const { id } = request.params;
+const users = ['Gustavo','João','Paulo'];
+
+server.get('/users/:index', (request,response) => {
+  const { index } = request.params;
   // As duas linhas tem o mesmo objetivo, porem a linha acima usa desestruturação
   //const id = request.params.id
 
-  return response.json({ message : `O id do usuário é : ${id} ` });
+  return response.json(users[index]);
 });
 
 // Usando query params 
