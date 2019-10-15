@@ -2,10 +2,19 @@ const express = require('express');
 
 const server = express();
 
+// É necessário dizer para o express que ele vai usar JSON para que ele possa receber informações nesse formato
+server.use(express.json());
+
 //Usando route params
 
 const users = ['Gustavo','João','Paulo'];
 
+// Ler todos os usuarios
+server.get('/users', (request,response) => {
+  return response.json(users);
+})
+
+// Ler apenas um usuario
 server.get('/users/:index', (request,response) => {
   const { index } = request.params;
   // As duas linhas tem o mesmo objetivo, porem a linha acima usa desestruturação
@@ -14,14 +23,31 @@ server.get('/users/:index', (request,response) => {
   return response.json(users[index]);
 });
 
-// Usando query params 
+//Cria novo usuario
+server.post('/users', (request, response) => {
+  const { name } = request.body;
+  users.push(name);
+  response.json(users);
+});
 
-// server.get('/teste', (request,response) => {
+// Edita um usuario
+server.put('/users/:index', (request, response) => {
+  const { index } = request.params;
+  const { name } = request.body;
+
+  users[index] = name;
+
+  return response.json(users);
+});
+
+// Exclui um usuario
+server.delete('/users/:index',(request,response) => {
+  const { index } = request.params;
   
-//   const nome = request.query.nome; 
-
-//   return response.status(200).json({ message : `Hello ${nome}`});
-// });
+  users.splice(index, 1);
+  
+  return response.send();
+});
 
 server.listen(3000);
 
